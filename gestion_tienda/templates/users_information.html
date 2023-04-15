@@ -1,0 +1,200 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vista de ingreso</title>
+        <!--Importar bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <!--Importar fontAwesome-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body>
+        <div class="bg-primary">
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-4 mt-3 mb-3 text-white">
+                        <div class="row">
+                            <h5>Welcome {{ user.first_name }} {{ user.last_name }}</h5>
+                        </div>
+                        <div class="row">
+                            <h5>{{ user.userData.users_role }}</h5>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <a class="btn btn-success" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if user.userData.users_role == 'ADMINISTRADOR' %}
+        <div class="container mt-3 mb-3">
+            <div>
+                <a href="{% url 'gestion_tienda:admin_console' %}" class="btn btn-info"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="mt-5 text-center mb-3">
+            <h1>Informacion del usuario : {{ userInfo.first_name }} {{ userInfo.last_name }}</h1>
+        </div>
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-5 bg-light" style="border-radius: 20px;">
+                    <div class="row mb-2 mt-2">
+                        <div class="col-5">
+                            <h5>Full name : </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.first_name }} {{ userInfo.last_name }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>Username : </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.username }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>E-mail : </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.email }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>Role: </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.userData.users_role }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>Phone: </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.userData.users_cel_num }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>Role x2 : </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.userData.users_role }}</i>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h5>Start Date : </h5>
+                        </div>
+                        <div class="col-7">
+                            <i>{{ userInfo.userData.users_start_date|date:"Y-m-d" }}</i>
+                        </div>
+                    </div>
+                </div>
+                <!--div class="col-5 bg-light h-100" style="border-radius: 20px;">
+                    <div class="row mb-2 mt-2">
+                        <div class="col-5">
+                            <h5>Perfil : </h5>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <i>{{ usuarioInfo.datosusuario.perfilUsuario }}</i>
+                        </div>
+                    </div>
+                </div-->
+            </div>
+        </div>
+        <div class="mt-5 text-center mb-3">
+            <h3>User's products:</h3>
+        </div>
+        <div class="container mt-5">
+            <div class="row justify-content-between">
+                <div class="col-2 text-start">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newProduct"><i class="fa-solid fa-calendar-plus"></i> Add Product</button>
+                </div>
+                <!--div class="col-2 text-end">
+                    <a class="btn btn-success" href="#"><i class="fa-solid fa-download"></i> Download</a>
+                </div-->
+            </div>
+        </div>
+        <div class="mt-5 container">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Price bought</th>
+                            <th>Price sold</th>
+                            <th>Delete</th>
+                        </thead>
+                        <tbody>
+                            {% for product in users_product %}
+                            <tr>
+                                <td>{{ product.product_name }}</td>
+                                <td>{{ product.product_code }}</td>
+                                <td>{{ product.price_bought }}</td>
+                                <td>{{ product.price_sold }}</td>
+                                <td><a class="btn btn-danger" href="#"><i class="fa-solid fa-trash"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<!--Nueva tarea-->
+<div class="modal fade" id="newProduct" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" action="{% url 'gestion_tienda:newProduct' userInfo.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear nueva tarea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group justify-content-around mb-3">
+                        <div class="col-5">
+                            <label>Product name:</label>
+                            <input class="form-control" type="date" required name="product_name">
+                        </div>
+                        <div class="col-5">
+                            <label>Product code:</label>
+                            <input class="form-control" type="date" required name="product_code">
+                        </div>
+                        <div class="col-5">
+                            <label>Aquisiton price:</label>
+                            <input class="form-control" type="date" required name="price_bought">
+                        </div>
+                        <div class="col-5">
+                            <label>Selling price:</label>
+                            <input class="form-control" type="date" required name="price_sold">
+                        </div>
+                    </div>
+                    <!--div class="row form-group justify-content-around mb-3">
+                        <div class="col-11">
+                            <label>Descripcion de la tarea</label>
+                            <textarea class="form-control" type="text" required rows="4" name="descripcionTarea"></textarea>
+                        </div>
+                    </div-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

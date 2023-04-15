@@ -8,15 +8,30 @@ from .models import userData,productData
 # Create your views here.
 def index(request):
     if request.method == 'POST':
-        nombreUsuario = request.POST.get('nombreUsuario')
-        contraUsuario = request.POST.get('contraUsuario')
-        usuarioInfo = authenticate(request,username=nombreUsuario,password=contraUsuario)
-        if usuarioInfo is not None:
-            login(request,usuarioInfo)
-            return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
+        users_first_name = request.POST.get('users_first_name')
+        users_password = request.POST.get('users_password')
+        userInfo = authenticate(request,username=users_first_name,password=users_password)
+        if userInfo is not None:
+            login(request,userInfo)
+            if userInfo.userData.users_role == 'ADMINISTRADOR':
+                return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
+            else:
+                return HttpResponseRedirect(reverse('gestion_tienda:details_user',kwargs={'ind':userInfo.id}))
+                
         else:
             return HttpResponseRedirect(reverse('gestion_tienda:index'))
     return render(request,'login_page.html')
+
+def details_user(request,ind):
+    users_info=User.objects.get(id=ind)
+    users_product = productData.objects.filter(registered_by=users_info).order_by('id')
+    return render(request,'users_information.html',{
+        'userInfo': users_info,
+        'users_product': users_product
+    })
+
+
+
 
 
 @login_required(login_url='http://127.0.0.1:8000')
@@ -29,19 +44,18 @@ def admin_console(request):
         users_password = request.POST.get('users_password')
         users_role = request.POST.get('users_role')
         users_cel_num = request.POST.get('users_cel_num')
-        users_start_date = request.POST.get('users_start_date')
-        usuarioNuevo = User.objects.create(
+        new_user = User.objects.create(
             username=users_username,
             email=users_email,
         )
-        usuarioNuevo.set_password(users_password)
-        usuarioNuevo.first_name = users_first_name
-        usuarioNuevo.last_name = users_last_name
-        usuarioNuevo.is_staff = True
-        usuarioNuevo.save()
+        new_user.set_password(users_password)
+        new_user.first_name = users_first_name
+        new_user.last_name = users_last_name
+        new_user.is_staff = True
+        new_user.save()
 
         userData.objects.create(
-            user=usuarioNuevo,
+            user=new_user,
             users_role = users_role,
             users_cel_num = users_cel_num
         )
@@ -61,6 +75,3 @@ def delete_user(request,ind):
     user_to_delete.delete()
     return HttpResponseRedirect(reverse('gestion_tareas:admin_console'))
 
-def details_user(request,ind):
-    users_info=User.objects.get(id=ind)
-    return render(request,'informacionUsuario.html',{'users_info':users_info,})
