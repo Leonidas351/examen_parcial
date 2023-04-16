@@ -13,7 +13,7 @@ def index(request):
         userInfo = authenticate(request,username=users_first_name,password=users_password)
         if userInfo is not None:
             login(request,userInfo)
-            if userInfo.userData.users_role == 'ADMINISTRADOR':
+            if userInfo.userdata.users_role == 'ADMINISTRADOR':
                 return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
             else:
                 return HttpResponseRedirect(reverse('gestion_tienda:details_user',kwargs={'ind':userInfo.id}))
@@ -34,44 +34,48 @@ def details_user(request,ind):
 
 
 
-@login_required(login_url='http://127.0.0.1:8000')
+#@login_required(login_url='http://127.0.0.1:8000')
 def admin_console(request):
-    if request.method == 'POST':
-        users_first_name = request.POST.get('users_first_name')
-        users_last_name = request.POST.get('users_last_name')
-        users_email = request.POST.get('users_email')
-        users_username = request.POST.get('users_username')
-        users_password = request.POST.get('users_password')
-        users_role = request.POST.get('users_role')
-        users_cel_num = request.POST.get('users_cel_num')
-        new_user = User.objects.create(
-            username=users_username,
-            email=users_email,
-        )
-        new_user.set_password(users_password)
-        new_user.first_name = users_first_name
-        new_user.last_name = users_last_name
-        new_user.is_staff = True
-        new_user.save()
+    if request.user.userdata.users_role == 'ADMINISTRADOR':
+        if request.method == 'POST':
+            users_first_name = request.POST.get('users_first_name')
+            users_last_name = request.POST.get('users_last_name')
+            users_email = request.POST.get('users_email')
+            users_username = request.POST.get('users_username')
+            users_password = request.POST.get('users_password')
+            users_role = request.POST.get('users_role')
+            users_cel_num = request.POST.get('users_cel_num')
+            new_user = User.objects.create(
+                username=users_username,
+                email=users_email,
+            )
+            new_user.set_password(users_password)
+            new_user.first_name = users_first_name
+            new_user.last_name = users_last_name
+            new_user.is_staff = True
+            new_user.save()
 
-        userData.objects.create(
-            user=new_user,
-            users_role = users_role,
-            users_cel_num = users_cel_num
-        )
-        return HttpResponseRedirect(reverse('gestion_tareas:admin_console'))
-    return render(request,'admin_console.html',{
-        'all_users':User.objects.all().order_by('id')
-    })
+            userData.objects.create(
+                user=new_user,
+                users_role = users_role,
+                users_cel_num = users_cel_num
+            )
+            return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
+        return render(request,'admin_console.html',{
+            'all_users':User.objects.all().order_by('id')
+        })
+    else:
+        return HttpResponseRedirect(reverse('gestion_tienda:details_user', kwargs={'ind':request.user.id}))
+    
 
 @login_required(login_url='http://127.0.0.1:8000')
 def log_out(request):
     logout(request)
-    return HttpResponseRedirect(reverse('gestion_tareas:index'))
+    return HttpResponseRedirect(reverse('gestion_tienda:index'))
 
 def delete_user(request,ind):
     user_to_delete = User.objects.get(id=ind)
     userData.objects.get(user=user_to_delete).delete()
     user_to_delete.delete()
-    return HttpResponseRedirect(reverse('gestion_tareas:admin_console'))
+    return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Vista de ingreso</title>
+        <title>Admin Console</title>
         <!--Importar bootstrap-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -16,28 +16,28 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-4 mt-3 mb-3 text-white">
                         <div class="row">
-                            <h5>Bienvenido {{ user.first_name }} {{ user.last_name }}</h5>
+                            <h5>Welcome {{ user.first_name }} {{ user.last_name }}</h5>
                         </div>
                         <div class="row">
-                            <h5>{{ user.datosusuario.profesionUsuario }}</h5>
+                            <h5>{{ user.userData.users_role }}</h5>
                         </div>
                     </div>
                     <div class="col-1">
-                        <a class="btn btn-success" href="{% url 'django_tareas:cerrarSesion' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
+                        <a class="btn btn-success" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mt-5 text-center">
-            <h1>Gestion de tareas</h1>
+            <h1>Product management:</h1>
         </div>
         <div class="mt-5 container">
             <div class="row justify-content-between">
                 <div class="col-2">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoUsuario"><i class="fa-solid fa-user-plus"></i> Agregar usuario</button>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUser"><i class="fa-solid fa-user-plus"></i> Add User</button>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-success" href="#"><i class="fa-solid fa-download"></i> Desacargar</a>
+                    <a class="btn btn-success" href="#"><i class="fa-solid fa-download"></i> Download</a>
                 </div>
             </div>
         </div>
@@ -46,24 +46,24 @@
                 <div class="col-8">
                     <table class="table table-bordered">
                         <thead class="table-dark">
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Numero de celular</th>
-                            <th>Fecha de registro</th>
-                            <th>Ver</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
+                            <th>Name:</th>
+                            <th>Last Name:</th>
+                            <th>Phone:</th>
+                            <th>Registry Date:</th>
+                            <th>More on:</th>
+                            <th>Edit:</th>
+                            <th>Delete:</th>
                         </thead>
                         <tbody>
-                            {% for usuario in usuariosTotales %}
+                            {% for usuario in all_users %}
                             <tr>
                                 <td>{{ usuario.first_name }}</td>
                                 <td>{{ usuario.last_name }}</td>
-                                <td>{{ usuario.datosusuario.nroCelular }}</td>
-                                <td>{{ usuario.datosusuario.fechaIngreso }}</td>
-                                <td class="text-center"><a class="btn btn-info" href="{% url 'django_tareas:verUsuario' usuario.id %}"><i class="fa-solid fa-eye"></i></a></td>
+                                <td>{{ usuario.userData.users_cel_num }}</td>
+                                <td>{{ usuario.userData.users_start_date }}</td>
+                                <td class="text-center"><a class="btn btn-info" href="{% url 'gestion_tienda:details_user' usuario.id %}"><i class="fa-solid fa-eye"></i></a></td>
                                 <td class="text-center"><a class="btn btn-warning" href="#"><i class="fa-solid fa-edit"></i></a></td>
-                                <td class="text-center"><a class="btn btn-danger" href="{% url 'django_tareas:eliminarUsuario' usuario.id %}"><i class="fa-solid fa-trash"></i></a></td>
+                                <td class="text-center"><a class="btn btn-danger" href="{% url 'gestion_tienda:delete_user' usuario.id %}"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -75,69 +75,63 @@
 </html>
 
 <!--Nuevo usuario-->
-<div class="modal fade" id="nuevoUsuario" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form method="post" action="{% url 'django_tareas:consolaAdministrador' %}">
+            <form method="post" action="{% url 'gestion_tienda:admin_console' %}">
                 {% csrf_token %}
                 <div class="modal-header">
-                    <h5 class="modal-title">Crear nuevo usuario</h5>
+                    <h5 class="modal-title">Create new user:</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row form-group justify-content-around mb-3">
                         <div class="col-5">
                             <label>Username :</label>
-                            <input class="form-control" type="text" name="usernameUsuario" required>
+                            <input class="form-control" type="text" name="users_username" required>
                         </div>
                         <div class="col-5">
                             <label>Password :</label>
-                            <input class="form-control" type="password" name="contraUsuario" required>
+                            <input class="form-control" type="password" name="users_password" required>
                         </div>
                     </div>
                     <div class="row form-group justify-content-around mb-3">
                         <div class="col-5">
-                            <label>Nombre :</label>
-                            <input class="form-control" type="text" name="nombreUsuario" required>
+                            <label>Name :</label>
+                            <input class="form-control" type="text" name="users_first_name" required>
                         </div>
                         <div class="col-5">
-                            <label>Apellido :</label>
-                            <input class="form-control" type="text" name="apellidoUsuario" required>
+                            <label>Last Name :</label>
+                            <input class="form-control" type="text" name="users_last_name" required>
                         </div>
                     </div>
                     <div class="row form-group justify-content-around mb-3">
                         <div class="col-5">
                             <label>Profesion :</label>
-                            <input class="form-control" type="text" name="profesionUsuario" required>
+                            <input class="form-control" type="text" name="users_role" required>
                         </div>
                         <div class="col-5">
                             <label>Email :</label>
-                            <input class="form-control" type="email" name="emailUsuario" required>
+                            <input class="form-control" type="email" name="users_email" required>
                         </div>
                     </div>
                     <div class="row form-group justify-content-around mb-3">
                         <div class="col-5">
-                            <label>Tipo de usuario :</label>
-                            <select class="form-select" name="tipoUsuario">
-                                <option value="USUARIO">Usuario</option>
+                            <label>User's Role :</label>
+                            <select class="form-select" name="users_role">
+                                <option value="USUARIO">Vendedor</option>
                                 <option value="ADMINISTRADOR">Administrador</option>
                             </select>
                         </div>
                         <div class="col-5">
-                            <label>Nro de celular :</label>
-                            <input class="form-control" type="text" name="nroCelular" required>
-                        </div>
-                    </div>
-                    <div class="row form-group justify-content-around mb-3">
-                        <div class="col-11">
-                            <label>Perfil del usuario :</label>
-                            <textarea class="form-control" type="text" name="perfilUsuario" rows="4" required></textarea>
+                            <label>Phone :</label>
+                            <input class="form-control" type="text" name="users_cel_num" required>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </form>
         </div>
