@@ -19,7 +19,7 @@
                             <h5>Welcome {{ user.first_name }} {{ user.last_name }}</h5>
                         </div>
                         <div class="row">
-                            <h5>{{ user.userData.users_role }}</h5>
+                            <h5>{{ user.userdata.users_role }}</h5>
                         </div>
                     </div>
                     <div class="col-1">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        {% if user.userData.users_role == 'ADMINISTRADOR' %}
+        {% if user.userdata.users_role == 'ADMINISTRADOR' %}
         <div class="container mt-3 mb-3">
             <div>
                 <a href="{% url 'gestion_tienda:admin_console' %}" class="btn btn-info"><i class="fa-solid fa-arrow-left"></i></a>
@@ -70,7 +70,7 @@
                             <h5>Role: </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userData.users_role }}</i>
+                            <i>{{ userInfo.userdata.users_role }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -78,7 +78,7 @@
                             <h5>Phone: </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userData.users_cel_num }}</i>
+                            <i>{{ userInfo.userdata.users_cel_num }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -86,7 +86,7 @@
                             <h5>Role x2 : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userData.users_role }}</i>
+                            <i>{{ userInfo.userdata.users_role }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -94,7 +94,7 @@
                             <h5>Start Date : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userData.users_start_date|date:"Y-m-d" }}</i>
+                            <i>{{ userInfo.userdata.users_start_date|date:"Y-m-d" }}</i>
                         </div>
                     </div>
                 </div>
@@ -134,7 +134,9 @@
                             <th>Code</th>
                             <th>Price bought</th>
                             <th>Price sold</th>
+                            {% if user.userdata.users_role == 'ADMINISTRADOR' %}
                             <th>Delete</th>
+                            {% endif %}
                         </thead>
                         <tbody>
                             {% for product in users_product %}
@@ -143,7 +145,9 @@
                                 <td>{{ product.product_code }}</td>
                                 <td>{{ product.price_bought }}</td>
                                 <td>{{ product.price_sold }}</td>
-                                <td><a class="btn btn-danger" href="#"><i class="fa-solid fa-trash"></i></a></td>
+                                {% if user.userdata.users_role == 'ADMINISTRADOR' %}
+                                <td><a class="btn btn-danger" href="{% url 'gestion_tienda:delete_product' product %}"><i class="fa-solid fa-trash"></i></a></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -168,19 +172,19 @@
                     <div class="row form-group justify-content-around mb-3">
                         <div class="col-5">
                             <label>Product name:</label>
-                            <input class="form-control" type="date" required name="product_name">
+                            <input class="form-control" type="text" required name="product_name">
                         </div>
                         <div class="col-5">
                             <label>Product code:</label>
-                            <input class="form-control" type="date" required name="product_code">
+                            <input class="form-control" type="number" required name="product_code">
                         </div>
                         <div class="col-5">
                             <label>Aquisiton price:</label>
-                            <input class="form-control" type="date" required name="price_bought">
+                            <input class="form-control" type="number" required name="price_bought">
                         </div>
                         <div class="col-5">
                             <label>Selling price:</label>
-                            <input class="form-control" type="date" required name="price_sold">
+                            <input class="form-control" type="number" required name="price_sold">
                         </div>
                     </div>
                     <!--div class="row form-group justify-content-around mb-3">

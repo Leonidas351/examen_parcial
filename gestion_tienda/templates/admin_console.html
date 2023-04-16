@@ -14,7 +14,7 @@
         <div class="bg-primary">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
-                    <div class="col-4 mt-3 mb-3 text-white">
+                    <div class="col-3 mt-3 mb-3 text-white">
                         <div class="row">
                             <h5>Welcome {{ user.first_name }} {{ user.last_name }}</h5>
                         </div>
@@ -22,22 +22,21 @@
                             <h5>{{ user.userData.users_role }}</h5>
                         </div>
                     </div>
-                    <div class="col-1">
+                    <div class="col-5">
+                        <a class="btn btn-success" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Gestion Usuarios</a>
+                        <a class="btn btn-success" href="{% url 'gestion_tienda:details_user' user.id %}"><i class="fa-solid fa-right-to-bracket"></i> Gestion Productos</a>
                         <a class="btn btn-success" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mt-5 text-center">
-            <h1>Product management:</h1>
+            <h1>Gestión de Usuarios:</h1>
         </div>
         <div class="mt-5 container">
             <div class="row justify-content-between">
                 <div class="col-2">
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUser"><i class="fa-solid fa-user-plus"></i> Add User</button>
-                </div>
-                <div class="col-2">
-                    <a class="btn btn-success" href="#"><i class="fa-solid fa-download"></i> Download</a>
                 </div>
             </div>
         </div>
@@ -59,8 +58,8 @@
                             <tr>
                                 <td>{{ usuario.first_name }}</td>
                                 <td>{{ usuario.last_name }}</td>
-                                <td>{{ usuario.userData.users_cel_num }}</td>
-                                <td>{{ usuario.userData.users_start_date }}</td>
+                                <td>{{ usuario.userdata.users_cel_num }}</td>
+                                <td>{{ usuario.userdata.users_start_date }}</td>
                                 <td class="text-center"><a class="btn btn-info" href="{% url 'gestion_tienda:details_user' usuario.id %}"><i class="fa-solid fa-eye"></i></a></td>
                                 <td class="text-center"><a class="btn btn-warning" href="#"><i class="fa-solid fa-edit"></i></a></td>
                                 <td class="text-center"><a class="btn btn-danger" href="{% url 'gestion_tienda:delete_user' usuario.id %}"><i class="fa-solid fa-trash"></i></a></td>

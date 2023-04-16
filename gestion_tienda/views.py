@@ -75,7 +75,30 @@ def log_out(request):
 
 def delete_user(request,ind):
     user_to_delete = User.objects.get(id=ind)
-    userData.objects.get(user=user_to_delete).delete()
+    #userData.objects.get(user=user_to_delete).delete()
     user_to_delete.delete()
     return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
 
+def delete_product(request,ind):
+    ind.product_name.delete()
+    ind.product_code.delete()
+    ind.price_bought.delete()
+    ind.price_sold.delete()
+    return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
+
+
+def newProduct(request, ind):
+    if request.method == 'POST':
+        registered_by = User.objects.get(id=ind)
+        product_name = request.POST.get('product_name')
+        product_code = request.POST.get('product_code')
+        price_bought = request.POST.get('price_bought')
+        price_sold = request.POST.get('price_sold')
+        productData.objects.create(
+            product_name=product_name,
+            product_code=product_code,
+            price_bought=price_bought,
+            price_sold=price_sold,
+            registered_by=registered_by,
+        )
+        return HttpResponseRedirect(reverse('gestion_tienda:details_user', kwargs={'ind':ind}))
