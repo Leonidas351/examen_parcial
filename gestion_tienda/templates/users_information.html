@@ -10,8 +10,8 @@
         <!--Importar fontAwesome-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-    <body>
-        <div class="bg-primary">
+    <body style="background-color: rgb(37, 53, 53);">
+        <div class="bg-dark">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-4 mt-3 mb-3 text-white">
@@ -19,11 +19,11 @@
                             <h5>Welcome {{ user.first_name }} {{ user.last_name }}</h5>
                         </div>
                         <div class="row">
-                            <h5>{{ user.userdata.users_role }}</h5>
+                            <h5>Role: {{ user.userdata.users_role }}</h5>
                         </div>
                     </div>
                     <div class="col-1">
-                        <a class="btn btn-success" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
+                        <a class="btn btn-dark" href="{% url 'gestion_tienda:log_out' %}"><i class="fa-solid fa-right-to-bracket"></i> Salir</a>
                     </div>
                 </div>
             </div>
@@ -31,70 +31,62 @@
         {% if user.userdata.users_role == 'ADMINISTRADOR' %}
         <div class="container mt-3 mb-3">
             <div>
-                <a href="{% url 'gestion_tienda:admin_console' %}" class="btn btn-info"><i class="fa-solid fa-arrow-left"></i></a>
+                <a href="{% url 'gestion_tienda:admin_console' %}" class="btn btn-info btn-dark"><i class="fa-solid fa-arrow-left"></i></a>
             </div>
         </div>
         {% endif %}
         <div class="mt-5 text-center mb-3">
-            <h1>Informacion del usuario : {{ userInfo.first_name }} {{ userInfo.last_name }}</h1>
+            <h1 style="color: white;">Informacion del Usuario : {{ userInfo.first_name }} {{ userInfo.last_name }}</h1>
         </div>
         <div class="container">
             <div class="row justify-content-between">
-                <div class="col-5 bg-light" style="border-radius: 20px;">
+                <div class="col-5 bg-dark" style="border-radius: 20px;">
                     <div class="row mb-2 mt-2">
                         <div class="col-5">
-                            <h5>Full name : </h5>
+                            <h5 style="color: white;">Full name : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.first_name }} {{ userInfo.last_name }}</i>
+                            <i style="color: white;">{{ userInfo.first_name }} {{ userInfo.last_name }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-5">
-                            <h5>Username : </h5>
+                            <h5 style="color: white;">Username : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.username }}</i>
+                            <i style="color: white;">{{ userInfo.username }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-5">
-                            <h5>E-mail : </h5>
+                            <h5 style="color: white;">E-mail : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.email }}</i>
+                            <i style="color: white;">{{ userInfo.email }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-5">
-                            <h5>Role: </h5>
+                            <h5 style="color: white;">Role: </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userdata.users_role }}</i>
+                            <i style="color: white;">{{ userInfo.userdata.users_role }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-5">
-                            <h5>Phone: </h5>
+                            <h5 style="color: white;">Phone: </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userdata.users_cel_num }}</i>
+                            <i style="color: white;">{{ userInfo.userdata.users_cel_num }}</i>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-5">
-                            <h5>Role x2 : </h5>
+                            <h5 style="color: white;">Start Date : </h5>
                         </div>
                         <div class="col-7">
-                            <i>{{ userInfo.userdata.users_role }}</i>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-5">
-                            <h5>Start Date : </h5>
-                        </div>
-                        <div class="col-7">
-                            <i>{{ userInfo.userdata.users_start_date|date:"Y-m-d" }}</i>
+                            <i style="color: white;">{{ userInfo.userdata.users_start_date|date:"m-d-Y" }}</i>
                         </div>
                     </div>
                 </div>
@@ -113,12 +105,12 @@
             </div>
         </div>
         <div class="mt-5 text-center mb-3">
-            <h3>User's products:</h3>
+            <h3 style="color: white;">Gestión de Productos:</h3>
         </div>
         <div class="container mt-5">
             <div class="row justify-content-between">
                 <div class="col-2 text-start">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newProduct"><i class="fa-solid fa-calendar-plus"></i> Add Product</button>
+                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newProduct"><i class="fa-solid fa-plus"></i> Add Product</button>
                 </div>
                 <!--div class="col-2 text-end">
                     <a class="btn btn-success" href="#"><i class="fa-solid fa-download"></i> Download</a>
@@ -138,7 +130,7 @@
                             <th>Delete</th>
                             {% endif %}
                         </thead>
-                        <tbody>
+                        <tbody class="table-dark">
                             {% for product in users_product %}
                             <tr>
                                 <td>{{ product.product_name }}</td>
@@ -146,7 +138,7 @@
                                 <td>{{ product.price_bought }}</td>
                                 <td>{{ product.price_sold }}</td>
                                 {% if user.userdata.users_role == 'ADMINISTRADOR' %}
-                                <td><a class="btn btn-danger" href="{% url 'gestion_tienda:delete_product' product %}"><i class="fa-solid fa-trash"></i></a></td>
+                                <td><a class="btn btn-danger" href="{% url 'gestion_tienda:delete_product' product.registered_by.id product.product_name %}"><i class="fa-solid fa-trash"></i></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}

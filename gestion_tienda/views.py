@@ -79,12 +79,14 @@ def delete_user(request,ind):
     user_to_delete.delete()
     return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
 
-def delete_product(request,ind):
-    ind.product_name.delete()
-    ind.product_code.delete()
-    ind.price_bought.delete()
-    ind.price_sold.delete()
-    return HttpResponseRedirect(reverse('gestion_tienda:admin_console'))
+def delete_product(request,ind,ind2):
+    users_info=User.objects.get(id=ind)
+    users_product = productData.objects.filter(registered_by=users_info).order_by('id')
+    for product in users_product:
+        if ind2==product.product_name:
+            product.delete()
+    
+    return HttpResponseRedirect(reverse('gestion_tienda:details_user', kwargs={'ind':request.user.id}))
 
 
 def newProduct(request, ind):
